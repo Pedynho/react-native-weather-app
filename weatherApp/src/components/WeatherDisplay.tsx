@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { WeatherData } from '../services/weatherService';
 
 interface WeatherDisplayProps {
@@ -12,7 +12,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weatherData, loading, e
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Text className="text-lg font-medium">Loading weather data...</Text>
+        <Text className="text-lg font-medium text-black">Loading weather data...</Text>
       </View>
     );
   }
@@ -31,39 +31,74 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weatherData, loading, e
 
   const { main, weather, wind, name, sys } = weatherData;
   const weatherIcon = weather[0]?.icon;
-  const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+  const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@4x.png`;
+
+  const getWeatherEmoji = () => {
+    const condition = weather[0]?.main?.toLowerCase();
+    if (condition?.includes('clear')) return '☀️';
+    if (condition?.includes('cloud')) return '☁️';
+    if (condition?.includes('rain')) return '🌧️';
+    if (condition?.includes('snow')) return '❄️';
+    if (condition?.includes('thunderstorm')) return '⚡';
+    return '🌤️';
+  };
 
   return (
-    <View className="bg-white rounded-lg p-4 shadow-md m-4">
-      <View className="flex-row justify-between items-center">
-        <View>
-          <Text className="text-2xl font-bold">{name}, {sys.country}</Text>
-          <Text className="text-lg">{weather[0]?.description}</Text>
+    <View className="flex-1 items-center justify-center px-6 bg-blue-50 rounded-[10vw]">
+      {/* City and Weather Details */}
+      <View className="px-6 pt-6 pb-2">
+        <View className="flex-row items-center justify-between">
+          <View>
+            <Text className="text-black text-3xl font-bold">{name}</Text>
+            <Text className="text-black text-lg opacity-80">{sys.country}</Text>
+          </View>
+          <Text className="text-black text-5xl">{getWeatherEmoji()}</Text>
         </View>
-        <Image source={{ uri: iconUrl }} className="w-16 h-16" />
+        
+        {/* Temperature Display */}
+        <View className="items-center my-8">
+          <View className="flex-row items-start">
+            <Text className="text-black text-7xl font-bold">{Math.round(main.temp)}</Text>
+            <Text className="text-black text-3xl font-bold mt-1">°C</Text>
+          </View>
+          <Text className="text-black text-xl mt-2 capitalize">{weather[0]?.description}</Text>
+          <Text className="text-black text-md opacity-80">Feels like {Math.round(main.feels_like)}°C</Text>
+        </View>
       </View>
       
-      <View className="mt-4">
-        <Text className="text-4xl font-bold">{Math.round(main.temp)}°C</Text>
-        <Text className="text-gray-600">Feels like {Math.round(main.feels_like)}°C</Text>
-      </View>
-      
-      <View className="flex-row justify-between mt-4 pt-4 border-t border-gray-200">
+      {/* Weather Details Footer */}
+      <View className="bg-white bg-opacity-20 p-6 m-2 flex-row justify-between rounded-[10vw]">
         <View className="items-center">
-          <Text className="text-gray-500">Wind</Text>
-          <Text className="text-lg">{wind.speed} m/s</Text>
+          <Text className="text-black opacity-80">Wind</Text>
+          <Text className="text-black text-lg font-medium">{wind.speed} m/s</Text>
         </View>
         <View className="items-center">
-          <Text className="text-gray-500">Humidity</Text>
-          <Text className="text-lg">{main.humidity}%</Text>
+          <Text className="text-black opacity-80">Humidity</Text>
+          <Text className="text-black text-lg font-medium">{main.humidity}%</Text>
         </View>
         <View className="items-center">
-          <Text className="text-gray-500">Pressure</Text>
-          <Text className="text-lg">{main.pressure} hPa</Text>
+          <Text className="text-black opacity-80">Pressure</Text>
+          <Text className="text-black text-lg font-medium">{main.pressure} hPa</Text>
         </View>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  cardShadow: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 10,
+  },
+  weatherIcon: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  }
+});
 
 export default WeatherDisplay;

@@ -3,6 +3,7 @@ import { SafeAreaView, ScrollView, StatusBar, Text, View, RefreshControl } from 
 import { getCurrentPosition } from './src/services/locationService';
 import { getWeatherByCoordinates, WeatherData } from './src/services/weatherService';
 import WeatherDisplay from './src/components/WeatherDisplay';
+import './global.css';
 
 const App = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -38,7 +39,7 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-blue-50">
+    <SafeAreaView className="flex-1 bg-gray-50">
       <StatusBar barStyle="dark-content" />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
@@ -47,7 +48,7 @@ const App = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View className="py-6 px-4">
+        <View className="py-6 px-4 mt-6">
           <Text className="text-3xl font-bold text-center text-blue-800 mb-6">
             Weather Forecast
           </Text>
