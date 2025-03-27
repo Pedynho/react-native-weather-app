@@ -1,0 +1,47 @@
+# .NET build/output
+**/bin/
+**/obj/
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+*.vs/
+.vscode/
+
+# Local development files
+appsettings.Development.json
+appsettings.Local.json
+
+# IDE/Editor
+.idea/
+*.swp
+*.swo
+
+# NuGet packages
+**/packages/
+*.nupkg
+.nuget/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Docker
+**/.dockerignore
+docker-compose.*.yml
+**/docker-compose.override.yml
+**/docker-compose.vs.*
+
+# Entity Framework Core migrations (keep these if you're tracking migrations)
+# !Migrations/
+
+# Local development
